@@ -1,89 +1,64 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <h1>Welcome to Your Vue.js App</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank">Forum</a>
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank">Community Chat</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank">Twitter</a>
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank">vue-router</a>
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a>
-      </li>
-      <li>
-        <a href="https://github.com/vuejs/awesome-vue" target="_blank"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <br /><br /><br />
+    <img class="logo" alt="Vue logo" src="../assets/morbiustv.png" />
+    <h1>MorbiusTV+ {{ movieName }} {{ 1 }}</h1>
+    <p>Recommande tous les films possible, sauf Morbius.</p>
+    <p>Message is: {{ movieName }}</p>
+    <p>{{ movies.length }}</p>
+    <li v-for="item in movies" :key="item">
+      <!-- <img :src="`https://image.tmdb.org/t/p/w200${item.poster_path}`" /> -->
+      <div
+        class="test"
+        :style="`
+        background-image: url(${f(item.poster_path)});
+      `"
+        @touch="darken()"
+      >
+        {{ item.title || item.name }}
+      </div>
+    </li>
+    <input v-model="movieName" placeholder="edit me" />
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Home",
+  data: function () {
+    return { movieName: "h", movies: [{ id: "5" }] };
+  },
+  methods: {
+    f: function (url) {
+      return "https://image.tmdb.org/t/p/w200" + url;
+    },
+    darken: function () {},
+  },
+  created() {
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a`
+      )
+      .then((response) => {
+        // Do something if call succeeded
+        this.movies = response.data.results;
+        console.log(response.data.results);
+      })
+      .catch((error) => {
+        // Do something if call failed
+        console.log(error);
+      });
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.logo {
+  width: 300px;
+}
 .home {
   text-align: center;
 }
@@ -104,5 +79,10 @@ li {
 
 a {
   color: #42b983;
+}
+
+.test {
+  height: 300px;
+  width: 200px;
 }
 </style>

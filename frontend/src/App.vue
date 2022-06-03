@@ -11,7 +11,13 @@
 <style scoped>
 .nav {
   text-align: center;
-  padding: 30px;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: black;
+  width: 100%;
+  background: rgb(227, 130, 57);
 }
 
 .nav-link {
@@ -20,6 +26,6 @@
 }
 
 .nav-link.router-link-exact-active {
-  color: #42b983;
+  color: #6a430d;
 }
 </style>

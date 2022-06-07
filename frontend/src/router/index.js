@@ -3,12 +3,17 @@ import Home from "../views/Home.vue";
 import Counter from "../views/Counter.vue";
 import Users from "../views/Users.vue";
 import About from "../views/About.vue";
+import Movie from "../views/Movie.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/:id",
+    component: Movie,
   },
   {
     path: "/counter",

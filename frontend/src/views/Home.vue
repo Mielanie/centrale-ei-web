@@ -6,27 +6,24 @@
     <p>Recommande tous les films possible, sauf Morbius.</p>
     <p>Message is: {{ movieName }}</p>
     <p>{{ movies.length }}</p>
-    <li v-for="item in movies" :key="item">
-      <!-- <img :src="`https://image.tmdb.org/t/p/w200${item.poster_path}`" /> -->
-      <div
-        class="test"
-        :style="`
-        background-image: url(${f(item.poster_path)});
-      `"
-        @touch="darken()"
-      >
-        {{ item.title || item.name }}
-      </div>
+    <li v-for="item in movies" :key="item.id">
+      <Movie :movie="item" />
     </li>
+    <br />
+    <br />
     <input v-model="movieName" placeholder="edit me" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Movie from "@/components/Movie.vue";
 
 export default {
   name: "Home",
+  components: {
+    Movie,
+  },
   data: function () {
     return { movieName: "h", movies: [{ id: "5" }] };
   },
@@ -34,7 +31,6 @@ export default {
     f: function (url) {
       return "https://image.tmdb.org/t/p/w200" + url;
     },
-    darken: function () {},
   },
   created() {
     axios
@@ -44,11 +40,9 @@ export default {
       .then((response) => {
         // Do something if call succeeded
         this.movies = response.data.results;
-        console.log(response.data.results);
       })
       .catch((error) => {
         // Do something if call failed
-        console.log(error);
       });
   },
 };
